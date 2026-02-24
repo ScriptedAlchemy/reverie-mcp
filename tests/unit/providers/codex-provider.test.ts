@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "@rstest/core";
 
 import { CodexProvider } from "../../../skills/agentic-history-search/scripts/providers/codex-provider.js";
 import { resolveScope } from "../../../skills/agentic-history-search/scripts/core/scope.js";

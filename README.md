@@ -68,3 +68,5 @@ Arguments:
 ```bash
 npm test
 ```
+
+The test suite runs with **Rstest** (`rstest run`) in the same Rstack ecosystem as Rslib.

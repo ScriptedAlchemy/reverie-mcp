@@ -9,7 +9,7 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist-tsc",
-    "types": ["node", "vitest/globals"]
+    "types": ["node"]
   },
-  "include": ["skills/**/*.ts", "tests/**/*.ts", "vitest.config.ts", "rslib.config.ts"]
+  "include": ["skills/**/*.ts", "tests/**/*.ts", "rstest.config.ts", "rslib.config.ts"]
 }

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "@rstest/core";
 
 import { rankEvidence } from "../../skills/agentic-history-search/scripts/core/ranking.js";
 import { resolveScope } from "../../skills/agentic-history-search/scripts/core/scope.js";
@@ -7,11 +7,11 @@ import type { EvidenceItem } from "../../skills/agentic-history-search/scripts/c
 describe("rankEvidence", () => {
   it("ranks lexical and scoped matches higher", () => {
     const scope = resolveScope();
-    const query = "test commands vitest";
+    const query = "test commands rstest";
     const evidence: EvidenceItem[] = [
       {
         provider: "claude",
-        snippet: `In ${scope.projectName}, run vitest for targeted tests`,
+        snippet: `In ${scope.projectName}, run rstest for targeted tests`,
         sourceId: "a",
         metadata: {},
         relevanceScore: 0,

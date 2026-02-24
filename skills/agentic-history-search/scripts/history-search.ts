@@ -118,7 +118,7 @@ const mockQueryResult = (input: QueryPastInput) => {
     ? []
     : selectedProviders.map((provider, index) => ({
         provider,
-        snippet: `Mock history [${provider}] says query "${input.query}" was solved using npm test and targeted vitest commands.`,
+        snippet: `Mock history [${provider}] says query "${input.query}" was solved using npm test and targeted rstest commands.`,
         sourceId: `mock-session-${index + 1}`,
         timestamp: new Date(Date.now() - index * 1000 * 60).toISOString(),
         sessionTitle: `Mock ${provider} session`,

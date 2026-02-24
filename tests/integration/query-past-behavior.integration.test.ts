@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "@rstest/core";
 
 describe("history-search query_past behavior", () => {
   it("merges mock evidence across selected providers", () => {

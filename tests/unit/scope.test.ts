@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "@rstest/core";
 
 import { resolveScope, scopeRelevance } from "../../skills/agentic-history-search/scripts/core/scope.js";
 
