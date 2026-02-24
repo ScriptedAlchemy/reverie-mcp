@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agentic History Search"
+  short_description: "Project-scoped chat-history retrieval with citations"
+  default_prompt: "Search this project's past conversations and answer with citations. Focus on implementation decisions, test commands, and prior fixes."
