@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "rslib build",
+    "build": "rslib build && node scripts/postbuild.mjs",
     "typecheck": "tsc --noEmit",
     "pretest": "npm run build",
     "test": "vitest run",

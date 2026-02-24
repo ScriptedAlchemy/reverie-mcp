@@ -21,7 +21,9 @@ npm install
 npm run build
 ```
 
-Bundled outputs are written to `skills/agentic-history-search/dist/` and can be executed with Node.
+Bundled outputs are written to `skills/agentic-history-search/dist/` and include:
+- `history-search.cjs` (CommonJS)
+- `history-search.js` + `history-search.mjs` (ESM)
 
 ## Run
 
