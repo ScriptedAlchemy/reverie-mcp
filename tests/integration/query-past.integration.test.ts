@@ -7,7 +7,7 @@ describe("history-search query_past integration (mock mode)", () => {
     const result = spawnSync(
       "node",
       [
-        "skills/agentic-history-search/dist/history-search.cjs",
+        "skills/agentic-history-search/dist/history-search.mjs",
         "--mode",
         "query_past",
         "--query",

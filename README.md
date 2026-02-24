@@ -22,7 +22,6 @@ npm run build
 ```
 
 Bundled outputs are written to `skills/agentic-history-search/dist/` and include:
-- `history-search.cjs` (CommonJS)
 - `history-search.js` + `history-search.mjs` (ESM)
 
 ## Run
@@ -41,7 +40,7 @@ bash skills/agentic-history-search/scripts/run-history-search.sh --mode recent_s
 
 Launcher behavior:
 
-- Requires bundled CLI: `skills/agentic-history-search/dist/history-search.cjs`
+- Requires bundled CLI: `skills/agentic-history-search/dist/history-search.mjs`
 - Build before running: `npm run build`
 
 ## Validate

@@ -8,11 +8,6 @@ export default defineConfig({
   },
   lib: [
     {
-      format: "cjs",
-      syntax: "es2022",
-      dts: false,
-    },
-    {
       format: "esm",
       syntax: "es2022",
       dts: false,

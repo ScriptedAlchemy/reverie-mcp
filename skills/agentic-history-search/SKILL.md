@@ -32,7 +32,7 @@ Recent sessions helper mode:
 bash skills/agentic-history-search/scripts/run-history-search.sh --mode recent_sessions --limit 10
 ```
 
-The launcher requires `skills/agentic-history-search/dist/history-search.cjs`. Build first with:
+The launcher requires `skills/agentic-history-search/dist/history-search.mjs`. Build first with:
 
 ```bash
 npm run build

@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SKILL_NAME="agentic-history-search"
 SKILL_SRC="$ROOT_DIR/skills/$SKILL_NAME"
-BUNDLE_PATH="$SKILL_SRC/dist/history-search.cjs"
+BUNDLE_PATH="$SKILL_SRC/dist/history-search.mjs"
 
 TARGET="${1:-all}"      # codex|claude|cursor|all
 INSTALL_MODE="${2:-symlink}" # symlink|copy

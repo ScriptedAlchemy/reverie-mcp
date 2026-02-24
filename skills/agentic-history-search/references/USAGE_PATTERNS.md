@@ -3,7 +3,7 @@
 ## Query past implementation rationale
 
 ```bash
-node skills/agentic-history-search/dist/history-search.cjs \
+node skills/agentic-history-search/dist/history-search.mjs \
   --mode query_past \
   --query "How did we implement feature flags and why?"
 ```
@@ -11,7 +11,7 @@ node skills/agentic-history-search/dist/history-search.cjs \
 ## Query past testing commands
 
 ```bash
-node skills/agentic-history-search/dist/history-search.cjs \
+node skills/agentic-history-search/dist/history-search.mjs \
   --mode query_past \
   --query "What are the test commands we used recently?"
 ```
@@ -19,7 +19,7 @@ node skills/agentic-history-search/dist/history-search.cjs \
 ## Query specific function understanding
 
 ```bash
-node skills/agentic-history-search/dist/history-search.cjs \
+node skills/agentic-history-search/dist/history-search.mjs \
   --mode query_past \
   --query "What does function parseSessionTrace do?"
 ```
@@ -27,7 +27,7 @@ node skills/agentic-history-search/dist/history-search.cjs \
 ## List recent sessions
 
 ```bash
-node skills/agentic-history-search/dist/history-search.cjs \
+node skills/agentic-history-search/dist/history-search.mjs \
   --mode recent_sessions \
   --limit 15
 ```
@@ -35,7 +35,7 @@ node skills/agentic-history-search/dist/history-search.cjs \
 ## Restrict providers
 
 ```bash
-node skills/agentic-history-search/dist/history-search.cjs \
+node skills/agentic-history-search/dist/history-search.mjs \
   --mode query_past \
   --providers claude,codex \
   --query "How did we fix flaky CI?"
@@ -52,7 +52,7 @@ npm run build
 Then run:
 
 ```bash
-node skills/agentic-history-search/dist/history-search.cjs \
+node skills/agentic-history-search/dist/history-search.mjs \
   --mode query_past \
   --query "what are test commands" \
   --mock

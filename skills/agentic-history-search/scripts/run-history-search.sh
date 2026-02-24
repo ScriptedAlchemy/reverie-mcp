@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-BUNDLED_CLI="$SKILL_DIR/dist/history-search.cjs"
+BUNDLED_CLI="$SKILL_DIR/dist/history-search.mjs"
 
 if [[ -f "$BUNDLED_CLI" ]]; then
   exec node "$BUNDLED_CLI" "$@"
