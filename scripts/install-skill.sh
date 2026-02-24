@@ -4,6 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SKILL_NAME="agentic-history-search"
 SKILL_SRC="$ROOT_DIR/skills/$SKILL_NAME"
+BUNDLE_PATH="$SKILL_SRC/dist/history-search.cjs"
 
 TARGET="${1:-all}"      # codex|claude|cursor|all
 INSTALL_MODE="${2:-symlink}" # symlink|copy
@@ -13,6 +14,21 @@ if [[ ! -d "$SKILL_SRC" ]]; then
   echo "Skill source not found: $SKILL_SRC" >&2
   exit 1
 fi
+
+ensure_bundle() {
+  if [[ -f "$BUNDLE_PATH" ]]; then
+    return 0
+  fi
+
+  echo "Compiled bundle missing at: $BUNDLE_PATH"
+  echo "Building skill bundle before install..."
+  (cd "$ROOT_DIR" && npm run build)
+
+  if [[ ! -f "$BUNDLE_PATH" ]]; then
+    echo "Build completed but bundle still missing: $BUNDLE_PATH" >&2
+    exit 1
+  fi
+}
 
 install_to() {
   local label="$1"
@@ -32,6 +48,10 @@ install_to() {
     ln -s "$SKILL_SRC" "$dst"
   fi
 }
+
+if [[ "$DRY_RUN" != "true" ]]; then
+  ensure_bundle
+fi
 
 case "$TARGET" in
   codex)

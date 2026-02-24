@@ -54,6 +54,8 @@ bash scripts/validate-skill.sh
 bash scripts/install-skill.sh all symlink
 ```
 
+The installer ensures the compiled skill bundle exists (builds automatically if missing).
+
 Arguments:
 - target: `codex|claude|cursor|all`
 - install mode: `symlink|copy`
