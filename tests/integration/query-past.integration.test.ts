@@ -1,18 +1,13 @@
 import { spawnSync } from "node:child_process";
-import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
 describe("history-search query_past integration (mock mode)", () => {
   it("returns citation-backed output", () => {
-    const script = path.resolve(
-      "skills/agentic-history-search/scripts/history-search.ts",
-    );
     const result = spawnSync(
-      "npx",
+      "node",
       [
-        "tsx",
-        script,
+        "dist/history-search.cjs",
         "--mode",
         "query_past",
         "--query",

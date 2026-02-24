@@ -39,14 +39,8 @@ bash skills/agentic-history-search/scripts/run-history-search.sh --mode recent_s
 
 Launcher behavior:
 
-- Uses bundled CLI first: `dist/history-search.cjs`
-- Falls back to direct TS execution if bundle is missing
-
-### Direct development fallback (without launcher)
-
-```bash
-npx tsx skills/agentic-history-search/scripts/history-search.ts --mode query_past --query "how did we implement xyz and why?"
-```
+- Requires bundled CLI: `dist/history-search.cjs`
+- Build before running: `npm run build`
 
 ## Validate
 

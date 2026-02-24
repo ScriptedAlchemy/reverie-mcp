@@ -41,18 +41,18 @@ node dist/history-search.cjs \
   --query "How did we fix flaky CI?"
 ```
 
-## Development mode (no build)
-
-```bash
-npx tsx skills/agentic-history-search/scripts/history-search.ts \
-  --mode query_past \
-  --query "How did we structure auth middleware?"
-```
-
 ## Mock mode for local test runs
 
+Build first:
+
 ```bash
-npx tsx skills/agentic-history-search/scripts/history-search.ts \
+npm run build
+```
+
+Then run:
+
+```bash
+node dist/history-search.cjs \
   --mode query_past \
   --query "what are test commands" \
   --mock

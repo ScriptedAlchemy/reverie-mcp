@@ -1,16 +1,12 @@
 import { spawnSync } from "node:child_process";
-import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
 describe("history-search recent_sessions integration (mock mode)", () => {
   it("returns sessions with diagnostics", () => {
-    const script = path.resolve(
-      "skills/agentic-history-search/scripts/history-search.ts",
-    );
     const result = spawnSync(
-      "npx",
-      ["tsx", script, "--mode", "recent_sessions", "--limit", "3", "--mock"],
+      "node",
+      ["dist/history-search.cjs", "--mode", "recent_sessions", "--limit", "3", "--mock"],
       { encoding: "utf8" },
     );
 

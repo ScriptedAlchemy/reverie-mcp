@@ -20,7 +20,7 @@ Use this skill for project-memory questions, such as:
 
 ## Execution
 
-Prefer the launcher (it auto-selects bundled CLI and falls back to source execution):
+Use the launcher (compiled bundle required):
 
 ```bash
 bash skills/agentic-history-search/scripts/run-history-search.sh --mode query_past --query "<user question>"
@@ -32,8 +32,11 @@ Recent sessions helper mode:
 bash skills/agentic-history-search/scripts/run-history-search.sh --mode recent_sessions --limit 10
 ```
 
-The launcher uses `dist/history-search.cjs` when available, otherwise falls back to:
-`npx tsx skills/agentic-history-search/scripts/history-search.ts ...`
+The launcher requires `dist/history-search.cjs`. Build first with:
+
+```bash
+npm run build
+```
 
 ## Output expectations
 
