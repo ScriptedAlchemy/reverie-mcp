@@ -21,7 +21,7 @@ npm install
 npm run build
 ```
 
-Bundled outputs are written to `dist/` and can be executed with Node.
+Bundled outputs are written to `skills/agentic-history-search/dist/` and can be executed with Node.
 
 ## Run
 
@@ -39,7 +39,7 @@ bash skills/agentic-history-search/scripts/run-history-search.sh --mode recent_s
 
 Launcher behavior:
 
-- Requires bundled CLI: `dist/history-search.cjs`
+- Requires bundled CLI: `skills/agentic-history-search/dist/history-search.cjs`
 - Build before running: `npm run build`
 
 ## Validate

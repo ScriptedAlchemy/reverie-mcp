@@ -10,7 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "tsc --noEmit",
-    "run:history": "node dist/history-search.cjs"
+    "run:history": "node skills/agentic-history-search/dist/history-search.cjs"
   },
   "devDependencies": {
     "@rslib/core": "^0.19.6",

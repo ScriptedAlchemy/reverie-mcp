@@ -7,7 +7,7 @@ describe("history-search recent_sessions behavior", () => {
     const result = spawnSync(
       "node",
       [
-        "dist/history-search.cjs",
+        "skills/agentic-history-search/dist/history-search.cjs",
         "--mode",
         "recent_sessions",
         "--providers",

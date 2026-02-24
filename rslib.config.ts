@@ -21,7 +21,7 @@ export default defineConfig({
   output: {
     target: "node",
     distPath: {
-      root: "dist",
+      root: "skills/agentic-history-search/dist",
     },
     cleanDistPath: true,
   },

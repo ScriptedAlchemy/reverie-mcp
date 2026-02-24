@@ -7,7 +7,7 @@ describe("history-search query_past behavior", () => {
     const result = spawnSync(
       "node",
       [
-        "dist/history-search.cjs",
+        "skills/agentic-history-search/dist/history-search.cjs",
         "--mode",
         "query_past",
         "--query",
@@ -30,7 +30,7 @@ describe("history-search query_past behavior", () => {
     const result = spawnSync(
       "node",
       [
-        "dist/history-search.cjs",
+        "skills/agentic-history-search/dist/history-search.cjs",
         "--mode",
         "query_past",
         "--query",

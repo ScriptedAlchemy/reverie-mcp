@@ -6,7 +6,14 @@ describe("history-search recent_sessions integration (mock mode)", () => {
   it("returns sessions with diagnostics", () => {
     const result = spawnSync(
       "node",
-      ["dist/history-search.cjs", "--mode", "recent_sessions", "--limit", "3", "--mock"],
+      [
+        "skills/agentic-history-search/dist/history-search.cjs",
+        "--mode",
+        "recent_sessions",
+        "--limit",
+        "3",
+        "--mock",
+      ],
       { encoding: "utf8" },
     );
 
