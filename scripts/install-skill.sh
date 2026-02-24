@@ -9,6 +9,7 @@ BUNDLE_PATH="$SKILL_SRC/dist/history-search.mjs"
 TARGET="${1:-all}"      # codex|claude|cursor|all
 INSTALL_MODE="${2:-symlink}" # symlink|copy
 DRY_RUN="${3:-false}"   # true|false
+CODEX_SKILL_DIRS=("$HOME/.agents/skills" "$HOME/.codex/skills")
 
 if [[ ! -d "$SKILL_SRC" ]]; then
   echo "Skill source not found: $SKILL_SRC" >&2
@@ -49,13 +50,19 @@ install_to() {
   fi
 }
 
+install_codex() {
+  for base in "${CODEX_SKILL_DIRS[@]}"; do
+    install_to "codex" "$base"
+  done
+}
+
 if [[ "$DRY_RUN" != "true" ]]; then
   ensure_bundle
 fi
 
 case "$TARGET" in
   codex)
-    install_to "codex" "$HOME/.agents/skills"
+    install_codex
     ;;
   claude)
     install_to "claude" "$HOME/.claude/skills"
@@ -64,7 +71,7 @@ case "$TARGET" in
     install_to "cursor" "$HOME/.cursor/skills"
     ;;
   all)
-    install_to "codex" "$HOME/.agents/skills"
+    install_codex
     install_to "claude" "$HOME/.claude/skills"
     install_to "cursor" "$HOME/.cursor/skills"
     ;;

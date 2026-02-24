@@ -4,7 +4,7 @@ import { isCommandAvailable, runCommand } from "../core/process.js";
 import type { HistoryProvider, ProviderExecutionResult, ProviderQueryContext, ProviderRecentContext } from "./base.js";
 import { baseSummary, parseProviderOutput } from "./common.js";
 
-const CURSOR_COMMAND_CANDIDATES = ["agent", "cursor-agent", "cursor"];
+const defaultCommandCandidates = ["agent"];
 
 type ProcessDeps = {
   runCommand: typeof runCommand;
@@ -34,8 +34,23 @@ export class CursorProvider implements HistoryProvider {
     },
   ) {}
 
+  private getCommandCandidates(): string[] {
+    const single = process.env.CURSOR_CLI_COMMAND?.trim();
+    const multi = process.env.CURSOR_CLI_COMMANDS
+      ?.split(",")
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+
+    const merged = [
+      ...(single ? [single] : []),
+      ...(multi ?? []),
+      ...defaultCommandCandidates,
+    ];
+    return Array.from(new Set(merged));
+  }
+
   private async resolveCommand(): Promise<string | undefined> {
-    for (const candidate of CURSOR_COMMAND_CANDIDATES) {
+    for (const candidate of this.getCommandCandidates()) {
       if (await this.deps.isCommandAvailable(candidate)) return candidate;
     }
     return undefined;
@@ -47,7 +62,7 @@ export class CursorProvider implements HistoryProvider {
       available: Boolean(command),
       notes: command
         ? [`Cursor CLI command detected: ${command}`]
-        : ["No Cursor CLI command found (tried: agent, cursor-agent, cursor)"],
+        : [`No Cursor CLI command found (tried: ${this.getCommandCandidates().join(", ")})`],
     };
   }
 

@@ -11,7 +11,7 @@ Portable Agent Skill for project-scoped conversation-history search across CLI a
 - Uses agentic CLIs/protocols where available:
   - Claude CLI (`claude`)
   - Codex CLI (`codex exec --json`)
-  - Cursor CLI (`agent`, `cursor-agent`, or `cursor`)
+  - Cursor CLI (`agent` by default; override via `CURSOR_CLI_COMMAND` / `CURSOR_CLI_COMMANDS`)
 - Returns structured output with citations, confidence, and provider diagnostics.
 
 ## Build / bundle (rslib)
@@ -56,6 +56,9 @@ bash scripts/install-skill.sh all symlink
 ```
 
 The installer ensures the compiled skill bundle exists (builds automatically if missing).
+For Codex compatibility, the installer writes to both:
+- `~/.agents/skills`
+- `~/.codex/skills`
 
 Arguments:
 - target: `codex|claude|cursor|all`
@@ -68,4 +71,5 @@ Arguments:
 npm test
 ```
 
-The test suite runs with **Rstest** (`rstest run`) in the same Rstack ecosystem as Rslib.
+The test suite runs with **Rstest** (`rstest run`) in the same Rstack ecosystem as Rslib, with
+`@rstest/adapter-rslib` to inherit relevant Rslib config.
