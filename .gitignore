@@ -1,6 +1,7 @@
 node_modules/
 dist/
-skills/agentic-history-search/dist/
+!skills/agentic-history-search/dist/
+!skills/agentic-history-search/dist/**
 dist-tsc/
 coverage/
 *.log

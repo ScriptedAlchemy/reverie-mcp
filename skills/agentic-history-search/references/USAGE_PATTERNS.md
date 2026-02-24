@@ -43,13 +43,7 @@ node skills/agentic-history-search/dist/history-search.mjs \
 
 ## Mock mode for local test runs
 
-Build first:
-
-```bash
-npm run build
-```
-
-Then run:
+Run:
 
 ```bash
 node skills/agentic-history-search/dist/history-search.mjs \

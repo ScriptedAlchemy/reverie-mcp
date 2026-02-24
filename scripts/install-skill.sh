@@ -21,14 +21,10 @@ ensure_bundle() {
     return 0
   fi
 
-  echo "Compiled bundle missing at: $BUNDLE_PATH"
-  echo "Building skill bundle before install..."
-  (cd "$ROOT_DIR" && npm run build)
-
-  if [[ ! -f "$BUNDLE_PATH" ]]; then
-    echo "Build completed but bundle still missing: $BUNDLE_PATH" >&2
-    exit 1
-  fi
+  echo "Compiled bundle missing at: $BUNDLE_PATH" >&2
+  echo "This repository is expected to ship prebuilt skill artifacts." >&2
+  echo "If you are a maintainer, run: npm run build" >&2
+  exit 1
 }
 
 install_to() {

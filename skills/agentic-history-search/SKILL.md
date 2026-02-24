@@ -32,11 +32,8 @@ Recent sessions helper mode:
 bash skills/agentic-history-search/scripts/run-history-search.sh --mode recent_sessions --limit 10
 ```
 
-The launcher requires `skills/agentic-history-search/dist/history-search.mjs`. Build first with:
-
-```bash
-npm run build
-```
+The launcher requires `skills/agentic-history-search/dist/history-search.mjs`.
+This skill is expected to ship with prebuilt artifacts in `dist/`.
 
 ## Output expectations
 

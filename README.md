@@ -16,6 +16,10 @@ Portable Agent Skill for project-scoped conversation-history search across CLI a
 
 ## Build / bundle (rslib)
 
+For normal skill usage, no local build is required. This repo ships prebuilt artifacts in the skill directory.
+
+If you are developing the skill and need to regenerate artifacts:
+
 ```bash
 npm install
 npm run build
@@ -41,7 +45,7 @@ bash skills/agentic-history-search/scripts/run-history-search.sh --mode recent_s
 Launcher behavior:
 
 - Requires bundled CLI: `skills/agentic-history-search/dist/history-search.mjs`
-- Build before running: `npm run build`
+- No build required for consumers when using this repository checkout.
 
 ## Validate
 
@@ -55,7 +59,7 @@ bash scripts/validate-skill.sh
 bash scripts/install-skill.sh all symlink
 ```
 
-The installer ensures the compiled skill bundle exists (builds automatically if missing).
+The installer requires the prebuilt bundle shipped in this repository.
 For Codex compatibility, the installer writes to both:
 - `~/.agents/skills`
 - `~/.codex/skills`
