@@ -25,19 +25,24 @@ Bundled outputs are written to `dist/` and can be executed with Node.
 
 ## Run
 
-### Query past
+### Query past (preferred launcher)
 
 ```bash
-node dist/history-search.cjs --mode query_past --query "what are the test commands?"
+bash skills/agentic-history-search/scripts/run-history-search.sh --mode query_past --query "what are the test commands?"
 ```
 
-### Recent sessions
+### Recent sessions (preferred launcher)
 
 ```bash
-node dist/history-search.cjs --mode recent_sessions --limit 10
+bash skills/agentic-history-search/scripts/run-history-search.sh --mode recent_sessions --limit 10
 ```
 
-### Development fallback (direct TS execution)
+Launcher behavior:
+
+- Uses bundled CLI first: `dist/history-search.cjs`
+- Falls back to direct TS execution if bundle is missing
+
+### Direct development fallback (without launcher)
 
 ```bash
 npx tsx skills/agentic-history-search/scripts/history-search.ts --mode query_past --query "how did we implement xyz and why?"

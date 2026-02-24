@@ -20,23 +20,20 @@ Use this skill for project-memory questions, such as:
 
 ## Execution
 
-Prefer bundled CLI output:
+Prefer the launcher (it auto-selects bundled CLI and falls back to source execution):
 
 ```bash
-node dist/history-search.cjs --mode query_past --query "<user question>"
+bash skills/agentic-history-search/scripts/run-history-search.sh --mode query_past --query "<user question>"
 ```
 
 Recent sessions helper mode:
 
 ```bash
-node dist/history-search.cjs --mode recent_sessions --limit 10
+bash skills/agentic-history-search/scripts/run-history-search.sh --mode recent_sessions --limit 10
 ```
 
-Fallback when bundle is unavailable:
-
-```bash
-npx tsx skills/agentic-history-search/scripts/history-search.ts --mode query_past --query "<user question>"
-```
+The launcher uses `dist/history-search.cjs` when available, otherwise falls back to:
+`npx tsx skills/agentic-history-search/scripts/history-search.ts ...`
 
 ## Output expectations
 

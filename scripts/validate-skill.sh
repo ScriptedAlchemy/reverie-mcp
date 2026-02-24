@@ -20,10 +20,10 @@ echo "[validate] typecheck"
 echo "[validate] build bundle"
 (cd "$ROOT_DIR" && npm run build)
 
-echo "[validate] smoke test (query_past mock mode)"
-(cd "$ROOT_DIR" && node dist/history-search.cjs --mode query_past --query "what are test commands" --mock >/dev/null)
+echo "[validate] smoke test (query_past mock mode via launcher)"
+(cd "$ROOT_DIR" && bash skills/agentic-history-search/scripts/run-history-search.sh --mode query_past --query "what are test commands" --mock >/dev/null)
 
-echo "[validate] smoke test (recent_sessions mock mode)"
-(cd "$ROOT_DIR" && node dist/history-search.cjs --mode recent_sessions --limit 5 --mock >/dev/null)
+echo "[validate] smoke test (recent_sessions mock mode via launcher)"
+(cd "$ROOT_DIR" && bash skills/agentic-history-search/scripts/run-history-search.sh --mode recent_sessions --limit 5 --mock >/dev/null)
 
 echo "Validation passed."
