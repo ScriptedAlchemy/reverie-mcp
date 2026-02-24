@@ -5,6 +5,11 @@ import type { ProviderExecutionResult, ProviderQueryContext, ProviderRecentConte
 import type { HistoryProvider } from "./base.js";
 import { baseSummary, parseProviderOutput } from "./common.js";
 
+type ProcessDeps = {
+  runCommand: typeof runCommand;
+  isCommandAvailable: typeof isCommandAvailable;
+};
+
 const buildQueryPrompt = (query: string, scopePath: string): string => `
 You are a history retrieval assistant. Search ONLY conversation history relevant to project scope "${scopePath}".
 Question: "${query}"
@@ -37,9 +42,15 @@ Limit to ${limit} sessions.
 
 export class ClaudeProvider implements HistoryProvider {
   readonly name = "claude" as const;
+  constructor(
+    private readonly deps: ProcessDeps = {
+      runCommand,
+      isCommandAvailable,
+    },
+  ) {}
 
   async isAvailable(): Promise<{ available: boolean; notes: string[] }> {
-    const available = await isCommandAvailable("claude");
+    const available = await this.deps.isCommandAvailable("claude");
     return {
       available,
       notes: available ? ["claude CLI available"] : ["claude CLI not found in PATH"],
@@ -55,7 +66,7 @@ export class ClaudeProvider implements HistoryProvider {
     if (!availability.available) return { summary, response: { evidence: [], sessions: [], notes: [] } };
 
     const prompt = buildQueryPrompt(ctx.query, ctx.scope.scopePath);
-    const result = await runCommand(
+    const result = await this.deps.runCommand(
       "claude",
       ["-p", prompt, "--output-format", "json"],
       { timeoutMs: ctx.timeBudgetMs },
@@ -82,7 +93,7 @@ export class ClaudeProvider implements HistoryProvider {
     if (!availability.available) return { summary, response: { evidence: [], sessions: [], notes: [] } };
 
     const prompt = buildRecentPrompt(ctx.scope.scopePath, ctx.limit);
-    const result = await runCommand(
+    const result = await this.deps.runCommand(
       "claude",
       ["-p", prompt, "--output-format", "json"],
       { timeoutMs: ctx.timeBudgetMs },

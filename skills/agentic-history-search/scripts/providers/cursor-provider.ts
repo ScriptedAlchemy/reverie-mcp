@@ -6,6 +6,11 @@ import { baseSummary, parseProviderOutput } from "./common.js";
 
 const CURSOR_COMMAND_CANDIDATES = ["agent", "cursor-agent", "cursor"];
 
+type ProcessDeps = {
+  runCommand: typeof runCommand;
+  isCommandAvailable: typeof isCommandAvailable;
+};
+
 const buildQueryPrompt = (query: string, scopePath: string): string => `
 Search Cursor chat history only for project scope "${scopePath}".
 Question: "${query}".
@@ -22,10 +27,16 @@ Return JSON:
 
 export class CursorProvider implements HistoryProvider {
   readonly name = "cursor" as const;
+  constructor(
+    private readonly deps: ProcessDeps = {
+      runCommand,
+      isCommandAvailable,
+    },
+  ) {}
 
   private async resolveCommand(): Promise<string | undefined> {
     for (const candidate of CURSOR_COMMAND_CANDIDATES) {
-      if (await isCommandAvailable(candidate)) return candidate;
+      if (await this.deps.isCommandAvailable(candidate)) return candidate;
     }
     return undefined;
   }
@@ -51,7 +62,7 @@ export class CursorProvider implements HistoryProvider {
     if (!command) return { summary, response: { evidence: [], sessions: [], notes: [] } };
 
     const prompt = buildQueryPrompt(ctx.query, ctx.scope.scopePath);
-    const result = await runCommand(
+    const result = await this.deps.runCommand(
       command,
       ["-p", prompt, "--output-format", "json"],
       { timeoutMs: ctx.timeBudgetMs },
@@ -79,7 +90,7 @@ export class CursorProvider implements HistoryProvider {
     if (!command) return { summary, response: { evidence: [], sessions: [], notes: [] } };
 
     const prompt = buildRecentPrompt(ctx.scope.scopePath, ctx.limit);
-    const result = await runCommand(
+    const result = await this.deps.runCommand(
       command,
       ["-p", prompt, "--output-format", "json"],
       { timeoutMs: ctx.timeBudgetMs },

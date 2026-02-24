@@ -112,17 +112,19 @@ const toCitations = (rankedEvidence: EvidenceItem[], maxCitations: number): Cita
 
 const mockQueryResult = (input: QueryPastInput) => {
   const scope = resolveScope(input.scopePath);
-  const syntheticEvidence: EvidenceItem[] = [
-    {
-      provider: "claude",
-      snippet: `Mock history says query "${input.query}" was solved using npm test and targeted vitest commands.`,
-      sourceId: "mock-session-1",
-      timestamp: new Date().toISOString(),
-      sessionTitle: "Mock debugging session",
-      metadata: {},
-      relevanceScore: 0,
-    },
-  ];
+  const selectedProviders = input.providers ?? (Object.keys(providers) as ProviderName[]);
+  const noEvidence = input.query.toLowerCase().includes("no evidence");
+  const syntheticEvidence: EvidenceItem[] = noEvidence
+    ? []
+    : selectedProviders.map((provider, index) => ({
+        provider,
+        snippet: `Mock history [${provider}] says query "${input.query}" was solved using npm test and targeted vitest commands.`,
+        sourceId: `mock-session-${index + 1}`,
+        timestamp: new Date(Date.now() - index * 1000 * 60).toISOString(),
+        sessionTitle: `Mock ${provider} session`,
+        metadata: {},
+        relevanceScore: 0,
+      }));
   const ranked = rankEvidence(input.query, syntheticEvidence, scope);
   return QueryPastOutputSchema.parse({
     answer: synthesizeAnswer(input.query, ranked),
@@ -130,16 +132,40 @@ const mockQueryResult = (input: QueryPastInput) => {
     confidence: ranked.length ? Math.min(0.95, ranked[0].relevanceScore + 0.2) : 0.15,
     insufficientEvidence: ranked.length === 0,
     scopeDiagnostics: scope,
-    providersUsed: [
-      {
-        provider: "claude",
-        available: true,
-        used: true,
-        status: "ok",
-        latencyMs: 1,
-        capabilityNotes: ["mock mode"],
-      },
-    ],
+    providersUsed: selectedProviders.map((provider) => ({
+      provider,
+      available: true,
+      used: true,
+      status: "ok",
+      latencyMs: 1,
+      capabilityNotes: ["mock mode"],
+    })),
+  });
+};
+
+const mockRecentSessionsResult = (input: RecentSessionsInput) => {
+  const scope = resolveScope(input.scopePath);
+  const selectedProviders = input.providers ?? (Object.keys(providers) as ProviderName[]);
+  const sessions: RecentSession[] = selectedProviders.map((provider, index) => ({
+    provider,
+    sessionId: `mock-session-recent-${index + 1}`,
+    timestamp: new Date(Date.now() - index * 1000 * 60).toISOString(),
+    title: `Mock recent ${provider} session`,
+    summary: "Mocked recent session summary.",
+    projectHint: scope.projectName,
+  }));
+
+  return RecentSessionsOutputSchema.parse({
+    sessions: rankSessions(sessions, scope).slice(0, input.limit ?? 10),
+    scopeDiagnostics: scope,
+    providersUsed: selectedProviders.map((provider) => ({
+      provider,
+      available: true,
+      used: true,
+      status: "ok",
+      latencyMs: 1,
+      capabilityNotes: ["mock mode"],
+    })),
   });
 };
 
@@ -192,29 +218,7 @@ const runQueryPast = async (input: QueryPastInput, mockMode: boolean) => {
 const runRecentSessions = async (input: RecentSessionsInput, mockMode: boolean) => {
   const scope = resolveScope(input.scopePath);
   if (mockMode) {
-    return RecentSessionsOutputSchema.parse({
-      sessions: [
-        {
-          provider: "claude",
-          sessionId: "mock-session-recent",
-          timestamp: new Date().toISOString(),
-          title: "Mock recent session",
-          summary: "Mocked recent session summary.",
-          projectHint: scope.projectName,
-        },
-      ],
-      scopeDiagnostics: scope,
-      providersUsed: [
-        {
-          provider: "claude",
-          available: true,
-          used: true,
-          status: "ok",
-          latencyMs: 1,
-          capabilityNotes: ["mock mode"],
-        },
-      ],
-    });
+    return mockRecentSessionsResult(input);
   }
 
   const providerNames = input.providers ?? (Object.keys(providers) as ProviderName[]);

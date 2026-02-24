@@ -4,6 +4,11 @@ import { isCommandAvailable, runCommand } from "../core/process.js";
 import type { HistoryProvider, ProviderExecutionResult, ProviderQueryContext, ProviderRecentContext } from "./base.js";
 import { baseSummary, parseProviderOutput } from "./common.js";
 
+type ProcessDeps = {
+  runCommand: typeof runCommand;
+  isCommandAvailable: typeof isCommandAvailable;
+};
+
 const buildQueryPrompt = (query: string, scopePath: string): string => `
 Search only Codex conversation history for project scope "${scopePath}".
 Answer this question using history evidence only: "${query}".
@@ -21,9 +26,15 @@ Return JSON:
 
 export class CodexProvider implements HistoryProvider {
   readonly name = "codex" as const;
+  constructor(
+    private readonly deps: ProcessDeps = {
+      runCommand,
+      isCommandAvailable,
+    },
+  ) {}
 
   async isAvailable(): Promise<{ available: boolean; notes: string[] }> {
-    const available = await isCommandAvailable("codex");
+    const available = await this.deps.isCommandAvailable("codex");
     return {
       available,
       notes: available ? ["codex CLI available"] : ["codex CLI not found in PATH"],
@@ -39,7 +50,7 @@ export class CodexProvider implements HistoryProvider {
     if (!availability.available) return { summary, response: { evidence: [], sessions: [], notes: [] } };
 
     const prompt = buildQueryPrompt(ctx.query, ctx.scope.scopePath);
-    const result = await runCommand("codex", ["exec", "--json", prompt], {
+    const result = await this.deps.runCommand("codex", ["exec", "--json", prompt], {
       timeoutMs: ctx.timeBudgetMs,
     });
     summary.latencyMs = Math.round(performance.now() - start);
@@ -63,7 +74,7 @@ export class CodexProvider implements HistoryProvider {
     if (!availability.available) return { summary, response: { evidence: [], sessions: [], notes: [] } };
 
     const prompt = buildRecentPrompt(ctx.scope.scopePath, ctx.limit);
-    const result = await runCommand("codex", ["exec", "--json", prompt], {
+    const result = await this.deps.runCommand("codex", ["exec", "--json", prompt], {
       timeoutMs: ctx.timeBudgetMs,
     });
     summary.latencyMs = Math.round(performance.now() - start);
