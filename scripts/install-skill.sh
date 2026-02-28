@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SKILL_NAME="agentic-history-search"
+SKILL_SRC="$ROOT_DIR/skills/$SKILL_NAME"
+BUNDLE_PATH="$SKILL_SRC/dist/history-search.mjs"
+
+TARGET="${1:-all}"      # codex|claude|cursor|all
+INSTALL_MODE="${2:-symlink}" # symlink|copy
+DRY_RUN="${3:-false}"   # true|false
+CODEX_SKILL_DIRS=("$HOME/.agents/skills" "$HOME/.codex/skills")
+
+if [[ ! -d "$SKILL_SRC" ]]; then
+  echo "Skill source not found: $SKILL_SRC" >&2
+  exit 1
+fi
+
+ensure_bundle() {
+  if [[ -f "$BUNDLE_PATH" ]]; then
+    return 0
+  fi
+
+  echo "Compiled bundle missing at: $BUNDLE_PATH" >&2
+  echo "This repository is expected to ship prebuilt skill artifacts." >&2
+  echo "If you are a maintainer, run: npm run build" >&2
+  exit 1
+}
+
+install_to() {
+  local label="$1"
+  local base="$2"
+  local dst="$base/$SKILL_NAME"
+
+  echo "[$label] target: $dst"
+  if [[ "$DRY_RUN" == "true" ]]; then
+    return 0
+  fi
+
+  mkdir -p "$base"
+  rm -rf "$dst"
+  if [[ "$INSTALL_MODE" == "copy" ]]; then
+    cp -R "$SKILL_SRC" "$dst"
+  else
+    ln -s "$SKILL_SRC" "$dst"
+  fi
+}
+
+install_codex() {
+  for base in "${CODEX_SKILL_DIRS[@]}"; do
+    install_to "codex" "$base"
+  done
+}
+
+if [[ "$DRY_RUN" != "true" ]]; then
+  ensure_bundle
+fi
+
+case "$TARGET" in
+  codex)
+    install_codex
+    ;;
+  claude)
+    install_to "claude" "$HOME/.claude/skills"
+    ;;
+  cursor)
+    install_to "cursor" "$HOME/.cursor/skills"
+    ;;
+  all)
+    install_codex
+    install_to "claude" "$HOME/.claude/skills"
+    install_to "cursor" "$HOME/.cursor/skills"
+    ;;
+  *)
+    echo "Unknown target: $TARGET (expected codex|claude|cursor|all)" >&2
+    exit 1
+    ;;
+esac
+
+echo "Install complete."
